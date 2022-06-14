@@ -10,7 +10,10 @@ const contentValidator = body('content').isLength({min:3,max:1000});
 const errorMiddleWAre = (req:Request, res:Response, next:NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).send({ errorsMessages: [{ message: "This Field is incorrect!", field: "youtubeUrl" }, { message: "This Field is incorrect!", field: "name" }] });
+        const test = errors.errors.map((item:any)=>{
+            return   [{ message: `${item.param} incorrect`, field: item.param }]
+        });
+        return res.status(400).send({ errorsMessages: test});
     }
     next()
 };
