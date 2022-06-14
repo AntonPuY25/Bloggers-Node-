@@ -5,6 +5,7 @@ const { body, validationResult } = require('express-validator');
 export const BloggersRoute = Router();
 
 const urlValidator = body('youtubeUrl').isURL().isLength({min:3,max:100});
+const nameValidator = body('name').isLength({min:3,max:15});
 
 
 const errorMiddleWAre = (req:Request, res:Response, next:NextFunction) => {
@@ -37,7 +38,7 @@ BloggersRoute.get('/:id',
     })
 
 BloggersRoute.post('/',
-    urlValidator,errorMiddleWAre,(req:Request, res:Response) => {
+    nameValidator,urlValidator,errorMiddleWAre,(req:Request, res:Response) => {
 
     if(!req.body.name || !req.body.youtubeUrl){
         res.send({
@@ -55,7 +56,7 @@ BloggersRoute.post('/',
 
 
 BloggersRoute.put('/:id',
-    (req:Request, res:Response) => {
+    urlValidator,errorMiddleWAre,(req:Request, res:Response) => {
         const id = +req.params.id;
         const {name,youtubeUrl} = req.body;
         if(id && name && youtubeUrl){

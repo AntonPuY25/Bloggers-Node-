@@ -6,6 +6,7 @@ const bloggers_repository_1 = require("../../Repositories/Blogers/bloggers-repos
 const { body, validationResult } = require('express-validator');
 exports.BloggersRoute = (0, express_1.Router)();
 const urlValidator = body('youtubeUrl').isURL().isLength({ min: 3, max: 100 });
+const nameValidator = body('name').isLength({ min: 3, max: 15 });
 const errorMiddleWAre = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -31,7 +32,7 @@ exports.BloggersRoute.get('/:id', (req, res) => {
         res.send(404);
     }
 });
-exports.BloggersRoute.post('/', urlValidator, errorMiddleWAre, (req, res) => {
+exports.BloggersRoute.post('/', nameValidator, urlValidator, errorMiddleWAre, (req, res) => {
     if (!req.body.name || !req.body.youtubeUrl) {
         res.send({
             "errorsMessages": [
@@ -46,7 +47,7 @@ exports.BloggersRoute.post('/', urlValidator, errorMiddleWAre, (req, res) => {
         res.status(201).send(bloggers_repository_1.bloggersRepository.setBlogger(req.body));
     }
 });
-exports.BloggersRoute.put('/:id', (req, res) => {
+exports.BloggersRoute.put('/:id', urlValidator, errorMiddleWAre, (req, res) => {
     const id = +req.params.id;
     const { name, youtubeUrl } = req.body;
     if (id && name && youtubeUrl) {

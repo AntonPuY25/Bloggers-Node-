@@ -3,7 +3,17 @@ import {postsRepository} from "../../Repositories/Posts/posts-repository";
 const { body, validationResult } = require('express-validator');
 
 export const PostsRoute = Router();
+const titleValidator = body('title').isLength({min:3,max:30});
+const shortDescriptionValidator = body('shortDescription').isLength({min:3,max:100});
+const contentValidator = body('content').isLength({min:3,max:1000});
 
+const errorMiddleWAre = (req:Request, res:Response, next:NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send({ errorsMessages: [{ message: "This Field is incorrect!", field: "youtubeUrl" }, { message: "This Field is incorrect!", field: "name" }] });
+    }
+    next()
+};
 PostsRoute.get('/',
     (req:Request, res:Response) => {
         res.status(200).send(postsRepository.getPosts())
@@ -27,7 +37,7 @@ PostsRoute.get('/:postId',
     })
 
 PostsRoute.post('/',
-    (req:Request, res:Response) => {
+    titleValidator,shortDescriptionValidator,contentValidator,errorMiddleWAre,(req:Request, res:Response) => {
     const data = req.body;
         if(data){
             const currentData = postsRepository.createPost(data);
