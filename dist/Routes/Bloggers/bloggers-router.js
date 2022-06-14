@@ -5,7 +5,7 @@ const express_1 = require("express");
 const bloggers_repository_1 = require("../../Repositories/Blogers/bloggers-repository");
 const { body, validationResult } = require('express-validator');
 exports.BloggersRoute = (0, express_1.Router)();
-const urlValidator = body('youtubeUrl').isURL();
+const urlValidator = body('youtubeUrl').isURL().isLength({ min: 3, max: 100 });
 const errorMiddleWAre = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 
 export const BloggersRoute = Router();
 
-const urlValidator = body('youtubeUrl').isURL();
+const urlValidator = body('youtubeUrl').isURL().isLength({min:3,max:100});
 
 
 const errorMiddleWAre = (req:Request, res:Response, next:NextFunction) => {
