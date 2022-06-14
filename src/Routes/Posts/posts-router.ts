@@ -32,7 +32,7 @@ PostsRoute.post('/',
         if(data){
             const currentData = postsRepository.createPost(data);
             if(currentData){
-                res.status(200).send(postsRepository.createPost(data))
+                res.status(201).send(postsRepository.createPost(data))
             }else{
                 res.send(400)
             }
@@ -82,7 +82,6 @@ PostsRoute.delete('/:postId',
             }else{
                 res.send(404)
             }
-
         }else{
             res.send(400)
         }

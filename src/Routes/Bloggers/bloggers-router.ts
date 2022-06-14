@@ -4,6 +4,17 @@ const { body, validationResult } = require('express-validator');
 
 export const BloggersRoute = Router();
 
+const urlValidator = body('youtubeUrl').isURL();
+
+
+const errorMiddleWAre = (req:Request, res:Response, next:NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send({ errorsMessages: [{ message: "This Field is incorrect!", field: "youtubeUrl" }, { message: "This Field is incorrect!", field: "name" }] });
+    }
+    next()
+};
+
 BloggersRoute.get('/',
     (req:Request, res:Response) => {
         res.status(200).send(bloggersRepository.getBloggers())
@@ -26,7 +37,8 @@ BloggersRoute.get('/:id',
     })
 
 BloggersRoute.post('/',
-    (req:Request, res:Response) => {
+    urlValidator,errorMiddleWAre,(req:Request, res:Response) => {
+
     if(!req.body.name || !req.body.youtubeUrl){
         res.send({
             "errorsMessages": [
@@ -37,9 +49,10 @@ BloggersRoute.post('/',
             ]
         })
     }else{
-        res.status(200).send(bloggersRepository.setBlogger(req.body))
+        res.status(201).send(bloggersRepository.setBlogger(req.body))
     }
     })
+
 
 BloggersRoute.put('/:id',
     (req:Request, res:Response) => {

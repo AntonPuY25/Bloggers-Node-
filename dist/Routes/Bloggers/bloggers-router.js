@@ -5,6 +5,14 @@ const express_1 = require("express");
 const bloggers_repository_1 = require("../../Repositories/Blogers/bloggers-repository");
 const { body, validationResult } = require('express-validator');
 exports.BloggersRoute = (0, express_1.Router)();
+const urlValidator = body('youtubeUrl').isURL();
+const errorMiddleWAre = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send({ errorsMessages: [{ message: "This Field is incorrect!", field: "youtubeUrl" }, { message: "This Field is incorrect!", field: "name" }] });
+    }
+    next();
+};
 exports.BloggersRoute.get('/', (req, res) => {
     res.status(200).send(bloggers_repository_1.bloggersRepository.getBloggers());
 });
@@ -23,7 +31,7 @@ exports.BloggersRoute.get('/:id', (req, res) => {
         res.send(404);
     }
 });
-exports.BloggersRoute.post('/', (req, res) => {
+exports.BloggersRoute.post('/', urlValidator, errorMiddleWAre, (req, res) => {
     if (!req.body.name || !req.body.youtubeUrl) {
         res.send({
             "errorsMessages": [
@@ -35,7 +43,7 @@ exports.BloggersRoute.post('/', (req, res) => {
         });
     }
     else {
-        res.status(200).send(bloggers_repository_1.bloggersRepository.setBlogger(req.body));
+        res.status(201).send(bloggers_repository_1.bloggersRepository.setBlogger(req.body));
     }
 });
 exports.BloggersRoute.put('/:id', (req, res) => {

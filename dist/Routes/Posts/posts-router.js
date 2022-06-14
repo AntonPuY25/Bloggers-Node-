@@ -28,7 +28,7 @@ exports.PostsRoute.post('/', (req, res) => {
     if (data) {
         const currentData = posts_repository_1.postsRepository.createPost(data);
         if (currentData) {
-            res.status(200).send(posts_repository_1.postsRepository.createPost(data));
+            res.status(201).send(posts_repository_1.postsRepository.createPost(data));
         }
         else {
             res.send(400);
