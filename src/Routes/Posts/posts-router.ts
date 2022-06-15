@@ -3,9 +3,9 @@ import {postsRepository} from "../../Repositories/Posts/posts-repository";
 const { body, validationResult } = require('express-validator');
 
 export const PostsRoute = Router();
-const titleValidator = body('title').isLength({min:3,max:30});
-const shortDescriptionValidator = body('shortDescription').isLength({min:3,max:100});
-const contentValidator = body('content').isLength({min:3,max:1000});
+const titleValidator = body('title').trim().isLength({min:3,max:30});
+const shortDescriptionValidator = body('shortDescription').trim().isLength({min:3,max:100});
+const contentValidator = body('content').trim().isLength({min:3,max:1000});
 
 const errorMiddleWAre = (req:Request, res:Response, next:NextFunction) => {
     const errors: any[] = validationResult(req).errors;
