@@ -45,7 +45,7 @@ exports.PostsRoute.post('/', titleValidator, shortDescriptionValidator, contentV
     const data = req.body;
     const currentData = posts_repository_1.postsRepository.createPost(data);
     if (currentData) {
-        res.status(201).send(posts_repository_1.postsRepository.createPost(data));
+        res.status(201).send(currentData);
     }
     else {
         res.status(400).send({ errorsMessages: [{ message: 'Not found', field: "bloggerId" }] });

@@ -50,7 +50,7 @@ PostsRoute.post('/',
         const data = req.body;
         const currentData = postsRepository.createPost(data);
         if (currentData) {
-            res.status(201).send(postsRepository.createPost(data))
+            res.status(201).send(currentData)
         } else {
             res.status(400).send( { errorsMessages: [{ message: 'Not found', field: "bloggerId" }] })
         }
@@ -84,6 +84,7 @@ PostsRoute.delete('/:postId',
             }else{
                 res.send(404)
             }
+
         }else{
             res.send(400)
         }
