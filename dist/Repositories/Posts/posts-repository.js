@@ -45,7 +45,8 @@ exports.postsRepository = {
     },
     updatePost(postId, { shortDescription, content, title, bloggerId }) {
         const currentPostIndex = posts.findIndex(({ id }) => id === postId);
-        if (currentPostIndex !== -1) {
+        const currentBlogger = bloggers_repository_1.bloggers.find(({ id }) => id === bloggerId);
+        if (currentPostIndex !== -1 && currentBlogger) {
             const newPost = {
                 id: postId,
                 title,

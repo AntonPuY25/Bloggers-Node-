@@ -48,7 +48,7 @@ exports.PostsRoute.post('/', titleValidator, shortDescriptionValidator, contentV
         res.status(201).send(posts_repository_1.postsRepository.createPost(data));
     }
     else {
-        res.send(400);
+        res.status(400).send({ errorsMessages: [{ message: 'Not found', field: "bloggerId" }] });
     }
 });
 exports.PostsRoute.put('/:postId', titleValidator, shortDescriptionValidator, contentValidator, errorMiddleWAre, (req, res) => {
@@ -59,7 +59,7 @@ exports.PostsRoute.put('/:postId', titleValidator, shortDescriptionValidator, co
         res.send(204);
     }
     else {
-        res.send(404);
+        res.status(400).send({ errorsMessages: [{ message: 'Not found', field: "bloggerId" }] });
     }
 });
 exports.PostsRoute.delete('/:postId', (req, res) => {

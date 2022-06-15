@@ -52,7 +52,7 @@ PostsRoute.post('/',
         if (currentData) {
             res.status(201).send(postsRepository.createPost(data))
         } else {
-            res.send(400)
+            res.status(400).send( { errorsMessages: [{ message: 'Not found', field: "bloggerId" }] })
         }
     })
 
@@ -65,7 +65,7 @@ PostsRoute.put('/:postId',
         if (currentData) {
             res.send(204)
         } else {
-            res.send(404)
+            res.status(400).send( { errorsMessages: [{ message: 'Not found', field: "bloggerId" }] })
         }
     })
 

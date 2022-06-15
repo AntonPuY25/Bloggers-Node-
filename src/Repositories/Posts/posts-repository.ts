@@ -51,7 +51,8 @@ export const postsRepository = {
     },
     updatePost(postId: number,{shortDescription,content,title,bloggerId}:CreatePostDateType){
         const currentPostIndex = posts.findIndex(({id})=>id===postId)
-        if(currentPostIndex !== -1){
+        const currentBlogger = bloggers.find(({id})=>id === bloggerId)
+        if(currentPostIndex !== -1 && currentBlogger){
             const newPost = {
                 id: postId,
                 title,
