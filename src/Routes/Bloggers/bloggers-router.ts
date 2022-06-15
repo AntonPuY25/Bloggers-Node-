@@ -20,7 +20,7 @@ const errorMiddleWAre = (req:Request, res:Response, next:NextFunction) => {
         const test = errorsWithoutDuplicate.map((item:any)=>{
             return   { message: `${item.param} incorrect`, field: item.param }
         });
-        return res.status(404).send({ errorsMessages: test});
+        return res.status(400).send({ errorsMessages: test});
     }
     next()
 };
