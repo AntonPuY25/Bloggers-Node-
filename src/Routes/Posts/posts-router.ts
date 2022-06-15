@@ -8,14 +8,17 @@ const shortDescriptionValidator = body('shortDescription').isLength({min:3,max:1
 const contentValidator = body('content').isLength({min:3,max:1000});
 
 const errorMiddleWAre = (req:Request, res:Response, next:NextFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    const errors: any[] = validationResult(req).errors;
+    const isEmpty = validationResult(req).isEmpty();
 
-
-        const test = errors.errors.map((item:any)=>{
+    if (!isEmpty) {
+        const errorsWithoutDuplicate = errors.filter((item:any,index:number)=>{
+            const duplicate = errors.find((el, i) => (i < index && el.param === item.param));
+            return !duplicate;
+        })
+        const test = errorsWithoutDuplicate.map((item:any)=>{
             return   { message: `${item.param} incorrect`, field: item.param }
         });
-
         return res.status(400).send({ errorsMessages: test});
     }
     next()
