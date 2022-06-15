@@ -53,7 +53,7 @@ export const postsRepository = {
         const currentPostIndex = posts.findIndex(({id})=>id===postId)
         if(currentPostIndex !== -1){
             const newPost = {
-                id: +new Date(),
+                id: postId,
                 title,
                 shortDescription,
                 content,

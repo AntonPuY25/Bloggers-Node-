@@ -47,24 +47,12 @@ PostsRoute.get('/:postId',
 
 PostsRoute.post('/',
     titleValidator,shortDescriptionValidator,contentValidator,errorMiddleWAre,(req:Request, res:Response) => {
-    const data = req.body;
-        if(data){
-            const currentData = postsRepository.createPost(data);
-            if(currentData){
-                res.status(201).send(postsRepository.createPost(data))
-            }else{
-                res.send(400)
-            }
-
-        }else{
-            return res.status(400).send({
-                "errorsMessages": [
-                    {
-                        "message": "string",
-                        "field": "string"
-                    }
-                ]
-            })
+        const data = req.body;
+        const currentData = postsRepository.createPost(data);
+        if (currentData) {
+            res.status(201).send(postsRepository.createPost(data))
+        } else {
+            res.send(400)
         }
     })
 
@@ -72,22 +60,12 @@ PostsRoute.put('/:postId',
     titleValidator,shortDescriptionValidator,contentValidator,errorMiddleWAre,(req:Request, res:Response) => {
         const postId = +req.params.postId;
         const data = req.body;
-        if(postId && data){
-            const currentData = postsRepository.updatePost(postId,data);
-            if(currentData){
-                res.send(204)
-            }else{
-                res.send(404)
-            }
-        }else{
-            return res.status(400).send({
-                "errorsMessages": [
-                    {
-                        "message": "string",
-                        "field": "string"
-                    }
-                ]
-            })
+
+        const currentData = postsRepository.updatePost(postId, data);
+        if (currentData) {
+            res.send(204)
+        } else {
+            res.send(404)
         }
     })
 

@@ -43,47 +43,23 @@ exports.PostsRoute.get('/:postId', (req, res) => {
 });
 exports.PostsRoute.post('/', titleValidator, shortDescriptionValidator, contentValidator, errorMiddleWAre, (req, res) => {
     const data = req.body;
-    if (data) {
-        const currentData = posts_repository_1.postsRepository.createPost(data);
-        if (currentData) {
-            res.status(201).send(posts_repository_1.postsRepository.createPost(data));
-        }
-        else {
-            res.send(400);
-        }
+    const currentData = posts_repository_1.postsRepository.createPost(data);
+    if (currentData) {
+        res.status(201).send(posts_repository_1.postsRepository.createPost(data));
     }
     else {
-        return res.status(400).send({
-            "errorsMessages": [
-                {
-                    "message": "string",
-                    "field": "string"
-                }
-            ]
-        });
+        res.send(400);
     }
 });
 exports.PostsRoute.put('/:postId', titleValidator, shortDescriptionValidator, contentValidator, errorMiddleWAre, (req, res) => {
     const postId = +req.params.postId;
     const data = req.body;
-    if (postId && data) {
-        const currentData = posts_repository_1.postsRepository.updatePost(postId, data);
-        if (currentData) {
-            res.send(204);
-        }
-        else {
-            res.send(404);
-        }
+    const currentData = posts_repository_1.postsRepository.updatePost(postId, data);
+    if (currentData) {
+        res.send(204);
     }
     else {
-        return res.status(400).send({
-            "errorsMessages": [
-                {
-                    "message": "string",
-                    "field": "string"
-                }
-            ]
-        });
+        res.send(404);
     }
 });
 exports.PostsRoute.delete('/:postId', (req, res) => {
