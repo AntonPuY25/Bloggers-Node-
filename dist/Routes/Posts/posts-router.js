@@ -12,7 +12,7 @@ const errorMiddleWAre = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const test = errors.errors.map((item) => {
-            return [{ message: `${item.param} incorrect`, field: item.param }];
+            return { message: `${item.param} incorrect`, field: item.param };
         });
         return res.status(400).send({ errorsMessages: test });
     }
