@@ -59,7 +59,7 @@ exports.PostsRoute.put('/:postId', titleValidator, shortDescriptionValidator, co
         res.send(204);
     }
     else {
-        res.status(400).send({ errorsMessages: [{ message: 'Not found', field: "bloggerId" }] });
+        res.send(404);
     }
 });
 exports.PostsRoute.delete('/:postId', (req, res) => {

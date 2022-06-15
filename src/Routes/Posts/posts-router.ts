@@ -65,7 +65,7 @@ PostsRoute.put('/:postId',
         if (currentData) {
             res.send(204)
         } else {
-            res.status(400).send( { errorsMessages: [{ message: 'Not found', field: "bloggerId" }] })
+            res.send(404)
         }
     })
 
