@@ -63,14 +63,7 @@ BloggersRoute.put('/:id',
                 res.send(404)
             }
         }else{
-            res.status(404).send({
-                "errorsMessages": [
-                    {
-                        "message": "Not valid params",
-                        "field": "youtubeUrl"
-                    }
-                ]
-            })
+            res.status(404)
         }
 
     })

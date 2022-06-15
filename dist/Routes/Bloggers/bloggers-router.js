@@ -55,14 +55,7 @@ exports.BloggersRoute.put('/:id', nameValidator, urlValidator, errorMiddleWAre, 
         }
     }
     else {
-        res.status(404).send({
-            "errorsMessages": [
-                {
-                    "message": "Not valid params",
-                    "field": "youtubeUrl"
-                }
-            ]
-        });
+        res.status(404);
     }
 });
 exports.BloggersRoute.delete('/:id', (req, res) => {
