@@ -37,7 +37,7 @@ export const bloggersRepository = {
     updateCurrentBlogger({name,youtubeUrl}:CreateBloggersDataType,bloggerId:number){
 
         const newBlogger = {
-            id: +new Date(),
+            id: bloggerId,
             name,
             youtubeUrl,
         }
