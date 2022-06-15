@@ -9,9 +9,15 @@ const nameValidator = body('name').isLength({min:3,max:15});
 
 
 const errorMiddleWAre = (req:Request, res:Response, next:NextFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        const test = errors.errors.map((item:any)=>{
+    const errors: any[] = validationResult(req).errors;
+    const isEmpty = validationResult(req).isEmpty();
+
+    if (!isEmpty) {
+        const errorsWithoutDuplicate = errors.filter((item:any,index:number)=>{
+            const duplicate = errors.find((el, i) => (i < index && el.param === item.param));
+            return !duplicate;
+        })
+        const test = errorsWithoutDuplicate.map((item:any)=>{
             return   { message: `${item.param} incorrect`, field: item.param }
         });
         return res.status(400).send({ errorsMessages: test});
