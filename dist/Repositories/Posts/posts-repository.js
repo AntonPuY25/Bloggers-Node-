@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postsRepository = void 0;
+exports.postsRepository = exports.posts = void 0;
 const bloggers_repository_1 = require("../Blogers/bloggers-repository");
-const posts = [
+exports.posts = [
     {
         id: 1,
         title: "New Post",
@@ -14,10 +14,10 @@ const posts = [
 ];
 exports.postsRepository = {
     getPosts() {
-        return posts;
+        return exports.posts;
     },
     getCurrentPost(postId) {
-        const currentPost = posts.find(({ id }) => id === postId);
+        const currentPost = exports.posts.find(({ id }) => id === postId);
         if (currentPost) {
             return currentPost;
         }
@@ -36,7 +36,7 @@ exports.postsRepository = {
                 bloggerId,
                 bloggerName: currentBlogger.name
             };
-            posts.push(newPost);
+            exports.posts.push(newPost);
             return newPost;
         }
         else {
@@ -44,7 +44,7 @@ exports.postsRepository = {
         }
     },
     updatePost(postId, { shortDescription, content, title, bloggerId }) {
-        const currentPostIndex = posts.findIndex(({ id }) => id === postId);
+        const currentPostIndex = exports.posts.findIndex(({ id }) => id === postId);
         const currentBlogger = bloggers_repository_1.bloggers.find(({ id }) => id === bloggerId);
         if (currentPostIndex !== -1 && currentBlogger) {
             const newPost = {
@@ -53,18 +53,18 @@ exports.postsRepository = {
                 shortDescription,
                 content,
                 bloggerId,
-                bloggerName: posts[currentPostIndex].bloggerName
+                bloggerName: exports.posts[currentPostIndex].bloggerName
             };
-            return posts.splice(currentPostIndex, 1, newPost);
+            return exports.posts.splice(currentPostIndex, 1, newPost);
         }
         else {
             return null;
         }
     },
     deletedPost(postId) {
-        const currentPostIndex = posts.findIndex(({ id }) => id === postId);
+        const currentPostIndex = exports.posts.findIndex(({ id }) => id === postId);
         if (currentPostIndex !== -1) {
-            return posts.splice(currentPostIndex, 1);
+            return exports.posts.splice(currentPostIndex, 1);
         }
         else {
             return null;

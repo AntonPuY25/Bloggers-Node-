@@ -54,6 +54,10 @@ exports.PostsRoute.post('/', titleValidator, shortDescriptionValidator, contentV
 exports.PostsRoute.put('/:postId', titleValidator, shortDescriptionValidator, contentValidator, errorMiddleWAre, (req, res) => {
     const postId = +req.params.postId;
     const data = req.body;
+    const currenPost = posts_repository_1.posts.find(({ id }) => id === postId);
+    if (!currenPost) {
+        res.send(404);
+    }
     const currentData = posts_repository_1.postsRepository.updatePost(postId, data);
     if (currentData) {
         res.send(204);

@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from "express";
-import {postsRepository} from "../../Repositories/Posts/posts-repository";
+import {posts, postsRepository} from "../../Repositories/Posts/posts-repository";
 const { body, validationResult } = require('express-validator');
 
 export const PostsRoute = Router();
@@ -60,6 +60,11 @@ PostsRoute.put('/:postId',
     titleValidator,shortDescriptionValidator,contentValidator,errorMiddleWAre,(req:Request, res:Response) => {
         const postId = +req.params.postId;
         const data = req.body;
+
+        const currenPost = posts.find(({id})=> id ===postId)
+        if(!currenPost){
+            res.send(404)
+        }
 
         const currentData = postsRepository.updatePost(postId, data);
         if (currentData) {

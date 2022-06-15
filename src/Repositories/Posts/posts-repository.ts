@@ -1,6 +1,6 @@
 import {bloggers} from "../Blogers/bloggers-repository";
 
-const posts = [
+export const posts = [
     {
         id: 1,
         title: "New Post",
