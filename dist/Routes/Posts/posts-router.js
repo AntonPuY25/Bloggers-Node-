@@ -63,7 +63,7 @@ exports.PostsRoute.post('/', titleValidator, shortDescriptionValidator, contentV
         });
     }
 });
-exports.PostsRoute.put('/:postId', (req, res) => {
+exports.PostsRoute.put('/:postId', titleValidator, shortDescriptionValidator, contentValidator, errorMiddleWAre, (req, res) => {
     const postId = +req.params.postId;
     const data = req.body;
     if (postId && data) {

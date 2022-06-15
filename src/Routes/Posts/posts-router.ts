@@ -69,7 +69,7 @@ PostsRoute.post('/',
     })
 
 PostsRoute.put('/:postId',
-    (req:Request, res:Response) => {
+    titleValidator,shortDescriptionValidator,contentValidator,errorMiddleWAre,(req:Request, res:Response) => {
         const postId = +req.params.postId;
         const data = req.body;
         if(postId && data){

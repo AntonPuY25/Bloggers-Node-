@@ -48,27 +48,14 @@ BloggersRoute.get('/:id',
 
 BloggersRoute.post('/',
     nameValidator,urlValidator,errorMiddleWAre,(req:Request, res:Response) => {
-
-    if(!req.body.name || !req.body.youtubeUrl){
-        res.send({
-            "errorsMessages": [
-                {
-                    "message": "Not valid params",
-                    "field": "youtubeUrl"
-                }
-            ]
-        })
-    }else{
         res.status(201).send(bloggersRepository.setBlogger(req.body))
-    }
     })
 
 
 BloggersRoute.put('/:id',
-    urlValidator,errorMiddleWAre,(req:Request, res:Response) => {
+    nameValidator,urlValidator,errorMiddleWAre,(req:Request, res:Response) => {
         const id = +req.params.id;
-        const {name,youtubeUrl} = req.body;
-        if(id && name && youtubeUrl){
+        if(id){
             const currentBlogger = bloggersRepository.updateCurrentBlogger(req.body,id);
             if(currentBlogger?.length){
                 res.send(204);

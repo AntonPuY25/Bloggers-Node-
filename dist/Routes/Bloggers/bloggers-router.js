@@ -5,8 +5,8 @@ const express_1 = require("express");
 const bloggers_repository_1 = require("../../Repositories/Blogers/bloggers-repository");
 const { body, validationResult } = require('express-validator');
 exports.BloggersRoute = (0, express_1.Router)();
-const urlValidator = body('youtubeUrl').isURL().isLength({ min: 3, max: 100 });
-const nameValidator = body('name').isLength({ min: 3, max: 15 });
+const urlValidator = body('youtubeUrl').trim().isURL().isLength({ min: 3, max: 100 });
+const nameValidator = body('name').trim().isLength({ min: 3, max: 15 });
 const errorMiddleWAre = (req, res, next) => {
     const errors = validationResult(req).errors;
     const isEmpty = validationResult(req).isEmpty();
@@ -41,24 +41,11 @@ exports.BloggersRoute.get('/:id', (req, res) => {
     }
 });
 exports.BloggersRoute.post('/', nameValidator, urlValidator, errorMiddleWAre, (req, res) => {
-    if (!req.body.name || !req.body.youtubeUrl) {
-        res.send({
-            "errorsMessages": [
-                {
-                    "message": "Not valid params",
-                    "field": "youtubeUrl"
-                }
-            ]
-        });
-    }
-    else {
-        res.status(201).send(bloggers_repository_1.bloggersRepository.setBlogger(req.body));
-    }
+    res.status(201).send(bloggers_repository_1.bloggersRepository.setBlogger(req.body));
 });
-exports.BloggersRoute.put('/:id', urlValidator, errorMiddleWAre, (req, res) => {
+exports.BloggersRoute.put('/:id', nameValidator, urlValidator, errorMiddleWAre, (req, res) => {
     const id = +req.params.id;
-    const { name, youtubeUrl } = req.body;
-    if (id && name && youtubeUrl) {
+    if (id) {
         const currentBlogger = bloggers_repository_1.bloggersRepository.updateCurrentBlogger(req.body, id);
         if (currentBlogger === null || currentBlogger === void 0 ? void 0 : currentBlogger.length) {
             res.send(204);
