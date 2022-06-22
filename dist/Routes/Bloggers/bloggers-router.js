@@ -1,8 +1,17 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BloggersRoute = void 0;
 const express_1 = require("express");
-const bloggers_repository_1 = require("../../Repositories/Blogers/bloggers-repository");
+const bloggers_service_1 = require("../../Business/bloggers-service");
 const { body, validationResult } = require('express-validator');
 exports.BloggersRoute = (0, express_1.Router)();
 const urlValidator = body('youtubeUrl').trim().isURL().isLength({ min: 3, max: 100 });
@@ -22,13 +31,13 @@ const errorMiddleWAre = (req, res, next) => {
     }
     next();
 };
-exports.BloggersRoute.get('/', (req, res) => {
-    res.status(200).send(bloggers_repository_1.bloggersRepository.getBloggers());
-});
-exports.BloggersRoute.get('/:id', (req, res) => {
+exports.BloggersRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.status(200).send(yield bloggers_service_1.bloggersService.getBloggers());
+}));
+exports.BloggersRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = +req.params.id;
     if (id) {
-        const currentBlogger = bloggers_repository_1.bloggersRepository.getCurrentBlogger(id);
+        const currentBlogger = yield bloggers_service_1.bloggersService.getCurrentBlogger(id);
         if (currentBlogger) {
             res.status(200).send(currentBlogger);
         }
@@ -39,15 +48,15 @@ exports.BloggersRoute.get('/:id', (req, res) => {
     else {
         res.send(404);
     }
-});
-exports.BloggersRoute.post('/', nameValidator, urlValidator, errorMiddleWAre, (req, res) => {
-    res.status(201).send(bloggers_repository_1.bloggersRepository.setBlogger(req.body));
-});
-exports.BloggersRoute.put('/:id', nameValidator, urlValidator, errorMiddleWAre, (req, res) => {
+}));
+exports.BloggersRoute.post('/', nameValidator, urlValidator, errorMiddleWAre, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.status(201).send(yield bloggers_service_1.bloggersService.setBlogger(req.body));
+}));
+exports.BloggersRoute.put('/:id', nameValidator, urlValidator, errorMiddleWAre, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = +req.params.id;
     if (id) {
-        const currentBlogger = bloggers_repository_1.bloggersRepository.updateCurrentBlogger(req.body, id);
-        if (currentBlogger === null || currentBlogger === void 0 ? void 0 : currentBlogger.length) {
+        const currentBlogger = yield bloggers_service_1.bloggersService.updateCurrentBlogger(req.body, id);
+        if (currentBlogger) {
             res.send(204);
         }
         else {
@@ -57,11 +66,11 @@ exports.BloggersRoute.put('/:id', nameValidator, urlValidator, errorMiddleWAre, 
     else {
         res.status(404);
     }
-});
-exports.BloggersRoute.delete('/:id', (req, res) => {
+}));
+exports.BloggersRoute.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = +req.params.id;
     if (id) {
-        const deletedBlogger = bloggers_repository_1.bloggersRepository.deleteCurrentBlogger(id);
+        const deletedBlogger = yield bloggers_service_1.bloggersService.deleteCurrentBlogger(id);
         if (deletedBlogger) {
             res.send(204);
         }
@@ -72,5 +81,5 @@ exports.BloggersRoute.delete('/:id', (req, res) => {
     else {
         res.send(404);
     }
-});
+}));
 //# sourceMappingURL=bloggers-router.js.map

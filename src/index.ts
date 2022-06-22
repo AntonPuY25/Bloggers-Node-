@@ -3,6 +3,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import {BloggersRoute} from "./Routes/Bloggers/bloggers-router";
 import {PostsRoute} from "./Routes/Posts/posts-router";
+import {runDb} from "./Repositories/Db/db";
 
 const app = express()
 
@@ -29,6 +30,12 @@ app.get('/', (req:Request, res:Response) => {
 app.use('/bloggers',BloggersRoute )
 app.use('/posts',PostsRoute )
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+
+const startApp = async ()=>{
+    await runDb();
+    app.listen(port, () => {
+        console.log(`Example app listening on port ${port}`)
+    })
+}
+startApp()
+

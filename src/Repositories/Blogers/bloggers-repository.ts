@@ -1,3 +1,6 @@
+import {bloggersCollection} from "../Db/db";
+
+
 export const bloggers = [
     {
         id: 1,
@@ -7,53 +10,47 @@ export const bloggers = [
     ];
 
 export type CreateBloggersDataType = {
+    id: number,
     name: string;
     youtubeUrl: string;
 }
-export const bloggersRepository = {
-    getBloggers(){
-        return bloggers
-    },
-    setBlogger({name,youtubeUrl}:CreateBloggersDataType){
 
-        const newBlogger = {
-            id: +new Date(),
-            name,
-            youtubeUrl,
-        }
-        bloggers.push(newBlogger)
+export const bloggersRepository = {
+    async getBloggers  (){
+        return bloggersCollection.find({}).toArray();
+    },
+    async setBlogger(newBlogger:CreateBloggersDataType){
+
+        bloggersCollection.insertOne(newBlogger)
 
         return newBlogger;
 
     },
-    getCurrentBlogger(bloggerId:number){
-        const currentBlogger = bloggers.find(({id})=>id === bloggerId)
+    async getCurrentBlogger(bloggerId:number){
+        const currentBlogger = bloggersCollection.findOne({id:bloggerId})
         if(currentBlogger){
             return currentBlogger
         }else{
             return null
         }
     },
-    updateCurrentBlogger({name,youtubeUrl}:CreateBloggersDataType,bloggerId:number){
+    async updateCurrentBlogger(newBlogger:CreateBloggersDataType,bloggerId:number){
 
-        const newBlogger = {
-            id: bloggerId,
-            name,
-            youtubeUrl,
-        }
-        const currentBloggerId = bloggers.findIndex(({id})=>id === bloggerId)
-        if(currentBloggerId !== -1){
-            return bloggers.splice(currentBloggerId,1,newBlogger)
+        const currentBlogger = await bloggersCollection.findOne({id:bloggerId})
+        if(currentBlogger){
+            bloggersCollection.updateOne({id:bloggerId},{$set: {name:newBlogger.name,youtubeUrl:newBlogger.youtubeUrl}})
+            return newBlogger
         }else{
             return null
         }
     },
-    deleteCurrentBlogger(bloggerId:number){
-        const currentBloggerId = bloggers.findIndex(({id})=>id === bloggerId)
-        if(currentBloggerId !== -1) {
-            return bloggers.splice(currentBloggerId, 1)
+    async deleteCurrentBlogger(bloggerId:number){
+        const currentBlogger = await bloggersCollection.findOne({id:bloggerId})
+        if(currentBlogger) {
+            bloggersCollection.deleteOne({id:bloggerId})
+            return true
         }else{
-            return  null
+            return null
         }
 
 
