@@ -37,7 +37,7 @@ app.use('/posts', posts_router_1.PostsRoute);
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, db_1.runDb)();
     app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`);
+        console.log(`Listening on port ${port}`);
     });
 });
 startApp();
